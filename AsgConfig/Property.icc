@@ -1,0 +1,46 @@
+#include "CxxUtils/make_unique.h"
+
+namespace ana
+{
+
+  //---------------------------------------------------------------------------
+  // Default constructor
+  //---------------------------------------------------------------------------
+  template<class T>
+  PropertyT<T>::PropertyT()
+  {}
+
+  //---------------------------------------------------------------------------
+  // Polymorphically clone a property
+  //---------------------------------------------------------------------------
+  template<class T> std::unique_ptr<Property>
+  PropertyT<T>::clone() const
+  {
+    auto p = CxxUtils::make_unique < PropertyT<T> > (*this);
+    return std::move(p);
+  }
+
+  //---------------------------------------------------------------------------
+  // Templated property constructor
+  //---------------------------------------------------------------------------
+  template<class T>
+  PropertyT<T>::PropertyT(const std::string& name, const T& val, Source source)
+    : Property(name, source),
+      m_val(val)
+  {}
+
+  //---------------------------------------------------------------------------
+  // Retrieve the property value
+  //---------------------------------------------------------------------------
+  template<class T> const T&
+  PropertyT<T>::value() const
+  { return m_val; }
+
+  //---------------------------------------------------------------------------
+  // Retrieve the property type
+  //---------------------------------------------------------------------------
+  template<class T> const std::type_info&
+  PropertyT<T>::type() const
+  { return typeid(T); }
+
+} // namespace ana
