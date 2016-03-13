@@ -6,38 +6,31 @@ namespace ana
   //---------------------------------------------------------------------------
   // Construct a property
   //---------------------------------------------------------------------------
-  Property::Property()
-    : m_source(SOURCE_UNKNOWN)
-  {}
-  //---------------------------------------------------------------------------
-  Property::Property(const std::string& name, Source source)
-    : m_name(name), m_source(source)
+  PropertyVal::PropertyVal(const std::string& name)
+    : m_name(name)
   {}
 
   //---------------------------------------------------------------------------
   // Clone a property
   //---------------------------------------------------------------------------
-  std::unique_ptr<Property> Property::clone() const
-  {
-    auto p = CxxUtils::make_unique<Property>(*this);
-    return std::move(p);
-  }
+  //std::unique_ptr<PropertyVal> PropertyVal::clone() const
+  //{
+  //  auto p = CxxUtils::make_unique<PropertyVal>(*this);
+  //  return std::move(p);
+  //}
 
   //---------------------------------------------------------------------------
-  // Retrieve the property fields: name, value, source
+  // Retrieve the property name
   //---------------------------------------------------------------------------
-  const std::string& Property::name() const
+  const std::string& PropertyVal::name() const
   { return m_name; }
-  const std::type_info& Property::type() const
-  { return typeid(void); }
-  const Property::Source& Property::source() const
-  { return m_source; }
-
+  //const std::type_info& PropertyVal::type() const
+  //{ return typeid(void); }
 
   //---------------------------------------------------------------------------
-  // PropertyList copy constructor
+  // PropertyValList copy constructor
   //---------------------------------------------------------------------------
-  PropertyList::PropertyList(const PropertyList& otherList)
+  PropertyValList::PropertyValList(const PropertyValList& otherList)
   {
     // Deep copy the properties
     m_props.reserve(otherList.m_props.size());
@@ -47,20 +40,20 @@ namespace ana
   }
 
   //---------------------------------------------------------------------------
-  // PropertyList copy assignment
+  // PropertyValList copy assignment
   //---------------------------------------------------------------------------
-  PropertyList& PropertyList::operator=(const PropertyList& otherList)
+  PropertyValList& PropertyValList::operator=(const PropertyValList& otherList)
   {
     // Use the copy constructor and the move assignment
-    PropertyList tempProp(otherList);
+    PropertyValList tempProp(otherList);
     *this = std::move(tempProp);
     return *this;
   }
 
   //---------------------------------------------------------------------------
-  // PropertyList move assignment
+  // PropertyValList move assignment
   //---------------------------------------------------------------------------
-  PropertyList& PropertyList::operator=(PropertyList&& otherList)
+  PropertyValList& PropertyValList::operator=(PropertyValList&& otherList)
   {
     if(this != &otherList){
       clear();
@@ -72,19 +65,19 @@ namespace ana
   //---------------------------------------------------------------------------
   // List iterations
   //---------------------------------------------------------------------------
-  PropertyList::iterator PropertyList::begin()
+  PropertyValList::iterator PropertyValList::begin()
   { return m_props.begin(); }
-  PropertyList::iterator PropertyList::end()
+  PropertyValList::iterator PropertyValList::end()
   { return m_props.end(); }
-  PropertyList::const_iterator PropertyList::begin() const
+  PropertyValList::const_iterator PropertyValList::begin() const
   { return m_props.begin(); }
-  PropertyList::const_iterator PropertyList::end() const
+  PropertyValList::const_iterator PropertyValList::end() const
   { return m_props.end(); }
 
   //---------------------------------------------------------------------------
   // Clear property list
   //---------------------------------------------------------------------------
-  void PropertyList::clear()
+  void PropertyValList::clear()
   {
     // Clean up my memory manually
     for(auto prop : m_props) delete prop;
@@ -94,7 +87,7 @@ namespace ana
   //---------------------------------------------------------------------------
   // Find property in list by name
   //---------------------------------------------------------------------------
-  const Property* PropertyList::find(const std::string& name) const
+  const PropertyVal* PropertyValList::find(const std::string& name) const
   {
     for(auto prop : m_props) {
       if(prop->name() == name) return prop;
@@ -105,7 +98,7 @@ namespace ana
   //---------------------------------------------------------------------------
   // Update a property in the list
   //---------------------------------------------------------------------------
-  void PropertyList::updateProperty(std::unique_ptr<Property> prop)
+  void PropertyValList::updateProperty(std::unique_ptr<PropertyVal> prop)
   {
     // Check if the property already exists
     for(auto propItr = m_props.begin(); propItr != m_props.end(); ++propItr) {

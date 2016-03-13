@@ -1,5 +1,5 @@
-#ifndef QUICK_ANA__PROPERTY_H
-#define QUICK_ANA__PROPERTY_H
+#ifndef ASGCONFIG_PROPERTY_H
+#define ASGCONFIG_PROPERTY_H
 
 // STL includes
 #include <string>
@@ -10,110 +10,103 @@
 namespace ana
 {
 
-  /// @class Property
-  /// @brief Tool property representation.
+  /// @class PropertyVal
+  /// @brief Wraps a property value for storage in a catalog.
   ///
-  /// Represents a configuration option of a tool.
-  /// The motivations for having our own custom Property class rather than use
-  /// the existing solutions are that we can possibly use this in both Athena
-  /// and in RootCore and we can add a flag which represents the source of the
-  /// property, e.g. config file or user.
+  /// Wraps a configuration option (a property) which can be stored in a
+  /// property catalog and applied to tools. In Gaudi, the standard Property
+  /// class can own its own value, which allows to use the same class in the
+  /// catalog as is used in the tools' property managers. In standalone,
+  /// however, the Property class is non-owning, so I introduce this class to
+  /// provide the extra missing functionality. This could thus be removed if
+  /// the Property class is updated.
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
-  class Property
+  class PropertyVal
   {
     public:
-      /// Enumerates the possible sources of properties
-      enum Source {
-        SOURCE_UNKNOWN = -1,
-        CONFIG_FILE,
-        USER,
-        SOURCE_N
-      };
 
-      /// Default constructor
-      Property();
-      /// Constructor taking a name, type, and source
-      Property(const std::string& name, Source source=SOURCE_UNKNOWN);
+      /// Constructor taking a name
+      PropertyVal(const std::string& name);
       /// Destructor
-      virtual ~Property() {};
-      /// Polymorphic cloning
-      virtual std::unique_ptr<Property> clone() const;
+      virtual ~PropertyVal() {};
 
       /// Get property name
       const std::string& name() const;
+
+      /// Polymorphic cloning
+      virtual std::unique_ptr<PropertyVal> clone() const = 0;
+
       /// Get property type
-      virtual const std::type_info& type() const;
-      /// Get property source
-      const Source& source() const;
+      virtual const std::type_info& type() const = 0;
 
     private:
-      /// Property fields
+
+      /// Name of the property
       std::string m_name;
-      Source m_source;
 
-  }; // class Property
+  }; // class PropertyVal
 
 
-  /// @class PropertyT
-  /// @brief Templated property with a value.
+  /// @class PropertyTVal
+  /// @brief Templated PropertyVal which actually stores the value.
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
   template<class T>
-  class PropertyT : public Property
+  class PropertyTVal : public PropertyVal
   {
     public:
       /// Default constructor
-      PropertyT();
+      PropertyTVal();
       /// Template constructor
-      PropertyT(const std::string& name, const T& val,
-                Source source=SOURCE_UNKNOWN);
+      PropertyTVal(const std::string& name, const T& val);
       /// Polymorphic cloning
-      virtual std::unique_ptr<Property> clone() const override;
+      virtual std::unique_ptr<PropertyVal> clone() const override;
       /// Retrieve the value
       const T& value() const;
       /// Get the type of the value
       const std::type_info& type() const override;
     private:
       T m_val;
-  }; // class PropertyT
+  }; // class PropertyTVal
 
 
   /// Convenience typedefs
-  typedef PropertyT<bool> BoolProperty;
-  typedef PropertyT<int> IntProperty;
-  typedef PropertyT<float> FloatProperty;
-  typedef PropertyT<std::string> StringProperty;
+  typedef PropertyTVal<bool> BoolProperty;
+  typedef PropertyTVal<int> IntProperty;
+  typedef PropertyTVal<float> FloatProperty;
+  typedef PropertyTVal<std::string> StringProperty;
 
 
-  /// @class PropertyList
-  /// @brief A container of owned properties for one client.
+  /// @class PropertyValList
+  /// @brief A container of owned property values for one client.
+  ///
   /// I would really prefer to use unique_ptr here, but there's no
   /// easy way to make that streamable in ROOT.
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
-  class PropertyList
+  class PropertyValList
   {
 
     public:
 
       /// Default constructor
-      PropertyList() {};
+      PropertyValList() {};
       /// Copy constructor
-      PropertyList(const PropertyList&);
+      PropertyValList(const PropertyValList&);
       /// Move constructor
-      PropertyList(PropertyList&&) = default;
+      PropertyValList(PropertyValList&&) = default;
       /// Destructor
-      ~PropertyList() { clear(); }
+      ~PropertyValList() { clear(); }
       /// Copy assignment
-      PropertyList& operator=(const PropertyList&);
+      PropertyValList& operator=(const PropertyValList&);
       /// Move assignment
-      PropertyList& operator=(PropertyList&&);
+      PropertyValList& operator=(PropertyValList&&);
 
       /// Convenience aliases
-      using ListType = std::vector<ana::Property*>;
+      using ListType = std::vector<ana::PropertyVal*>;
       using iterator = ListType::iterator;
       using const_iterator = ListType::const_iterator;
 
@@ -130,19 +123,19 @@ namespace ana
       void clear();
 
       /// Find property by name
-      const Property* find(const std::string& name) const;
+      const PropertyVal* find(const std::string& name) const;
 
       /// @brief Update a property in the list.
       /// If it already exists, the old property is replaced.
       /// Maybe this method should just make a copy.
-      void updateProperty(std::unique_ptr<Property> prop);
+      void updateProperty(std::unique_ptr<PropertyVal> prop);
 
     private:
 
       /// The wrapped list of owned properties
-      std::vector<ana::Property*> m_props;
+      std::vector<ana::PropertyVal*> m_props;
 
-  }; // class PropertyList
+  }; // class PropertyValList
 
 } // namespace ana
 

@@ -1,5 +1,5 @@
-#ifndef QUICK_ANA__ASGTOOL_SVC_H
-#define QUICK_ANA__ASGTOOL_SVC_H
+#ifndef ASGCONFIG_ASGTOOL_SVC_H
+#define ASGCONFIG_ASGTOOL_SVC_H
 
 // Should only be compiled outside of Athena
 #ifdef ROOTCORE

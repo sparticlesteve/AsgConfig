@@ -1,5 +1,5 @@
-#ifndef QUICK_ANA__PROPERTY_UTIL_H
-#define QUICK_ANA__PROPERTY_UTIL_H
+#ifndef ASGCONFIG_PROPERTY_UTIL_H
+#define ASGCONFIG_PROPERTY_UTIL_H
 
 /// @file PropertyUtil.h
 /// Contains some helper functions for applying properties to tools.
@@ -24,14 +24,14 @@ namespace ana
 {
 
   /// Forward declaration of property class
-  class Property;
+  class PropertyVal;
 
-  /// @brief Apply a Property to an AsgTool.
+  /// @brief Apply a PropertyVal to an AsgTool.
   /// Internall this will call a template function based on the saved type.
   /// A failure code is returned in the event of a failure in casting or in
   /// assigning the property value to the tool.
   ///
-  StatusCode applyProperty(const ana::Property* prop, asg::AsgTool* tool);
+  StatusCode applyProperty(const ana::PropertyVal* prop, asg::AsgTool* tool);
 
 } // namespace ana
 

@@ -21,7 +21,7 @@ namespace ana
   // Store one property for a tool
   //---------------------------------------------------------------------------
   void ConfigSvc::setProperty(const std::string& toolName,
-                              const Property* prop)
+                              const PropertyVal* prop)
   {
     // Clone the property into our own storage
     m_props[toolName].updateProperty( std::move(prop->clone()) );
@@ -31,7 +31,7 @@ namespace ana
   // Store list of properties for a tool
   //---------------------------------------------------------------------------
   void ConfigSvc::setProperties(const std::string& toolName,
-                                const PropertyList& props)
+                                const PropertyValList& props)
   {
     auto& propList = m_props[toolName];
     for(auto prop : props)

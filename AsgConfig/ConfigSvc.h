@@ -1,5 +1,5 @@
-#ifndef QUICK_ANA__CONFIG_SVC_H
-#define QUICK_ANA__CONFIG_SVC_H
+#ifndef ASGCONFIG_CONFIG_SVC_H
+#define ASGCONFIG_CONFIG_SVC_H
 
 // Eventaully should only be compiled outside of Athena
 #ifdef ROOTCORE
@@ -27,8 +27,8 @@ namespace ana
   /// @class ConfigSvc
   /// @brief Singleton service for holding/applying tool config properties.
   ///
-  /// We store here AsgConfig's custom Property objects rather than the AsgTools
-  /// Property because we need to own the internal property values.
+  /// We store here PropertyVal objects which hold their own values, rather
+  /// than use AsgTools/Property objects which do not.
   ///
   /// I would prefer not to use a singleton, but I think we'll need more
   /// infrastructure first.
@@ -46,12 +46,12 @@ namespace ana
       /// @brief Assign one property for a tool.
       /// The given property is copied into storage.
       void setProperty(const std::string& toolName,
-                       const Property* prop);
+                       const PropertyVal* prop);
 
       /// Assign list of properties to a tool.
       /// The given list is copied into storage.
       void setProperties(const std::string& toolName,
-                         const PropertyList& props);
+                         const PropertyValList& props);
 
       /// Configure a tool with known properties.
       StatusCode configureTool(asg::AsgTool* tool);
@@ -61,10 +61,10 @@ namespace ana
       /// Private constructor
       ConfigSvc();
 
-      /// Property storage map type
-      using PropMap = std::map< std::string, PropertyList >;
+      /// PropertyVal storage map type
+      using PropMap = std::map< std::string, PropertyValList >;
 
-      /// Property storage map
+      /// PropertyVal storage map
       PropMap m_props;
 
   }; // class ConfigSvc

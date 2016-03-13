@@ -7,16 +7,16 @@ namespace ana
   // Default constructor
   //---------------------------------------------------------------------------
   template<class T>
-  PropertyT<T>::PropertyT()
+  PropertyTVal<T>::PropertyTVal()
   {}
 
   //---------------------------------------------------------------------------
   // Polymorphically clone a property
   //---------------------------------------------------------------------------
-  template<class T> std::unique_ptr<Property>
-  PropertyT<T>::clone() const
+  template<class T> std::unique_ptr<PropertyVal>
+  PropertyTVal<T>::clone() const
   {
-    auto p = CxxUtils::make_unique < PropertyT<T> > (*this);
+    auto p = CxxUtils::make_unique < PropertyTVal<T> > (*this);
     return std::move(p);
   }
 
@@ -24,23 +24,22 @@ namespace ana
   // Templated property constructor
   //---------------------------------------------------------------------------
   template<class T>
-  PropertyT<T>::PropertyT(const std::string& name, const T& val, Source source)
-    : Property(name, source),
-      m_val(val)
+  PropertyTVal<T>::PropertyTVal(const std::string& name, const T& val)
+    : PropertyVal(name), m_val(val)
   {}
 
   //---------------------------------------------------------------------------
   // Retrieve the property value
   //---------------------------------------------------------------------------
   template<class T> const T&
-  PropertyT<T>::value() const
+  PropertyTVal<T>::value() const
   { return m_val; }
 
   //---------------------------------------------------------------------------
   // Retrieve the property type
   //---------------------------------------------------------------------------
   template<class T> const std::type_info&
-  PropertyT<T>::type() const
+  PropertyTVal<T>::type() const
   { return typeid(T); }
 
 } // namespace ana

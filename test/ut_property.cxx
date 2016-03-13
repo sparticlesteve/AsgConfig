@@ -5,7 +5,7 @@
 
 using CxxUtils::make_unique;
 using std::unique_ptr;
-using ana::PropertyList;
+using ana::PropertyValList;
 
 int main()
 {
@@ -22,15 +22,15 @@ int main()
   ana::StringProperty stringProp("StringProp", "Pi");
   assert(stringProp.value() == "Pi");
 
-  // Test PropertyList and clone the properties
-  auto propList = make_unique<PropertyList>();
+  // Test PropertyValList and clone the properties
+  auto propList = make_unique<PropertyValList>();
   propList->updateProperty(boolProp.clone());
   propList->updateProperty(intProp.clone());
   propList->updateProperty(floatProp.clone());
   propList->updateProperty(stringProp.clone());
 
   // Try moving the list
-  unique_ptr<PropertyList> propList2( std::move(propList) );
+  unique_ptr<PropertyValList> propList2( std::move(propList) );
 
   // Find a property from the list
   auto prop = propList2->find("StringProp");

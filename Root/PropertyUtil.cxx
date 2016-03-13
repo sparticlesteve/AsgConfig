@@ -19,12 +19,12 @@ namespace
   // Template function to apply a property to a tool.
   //---------------------------------------------------------------------------
   template<class T>
-  StatusCode applyPropertyT(const ana::Property* prop, asg::AsgTool* tool)
+  StatusCode applyPropertyT(const ana::PropertyVal* prop, asg::AsgTool* tool)
   {
     using namespace msgPropUtil;
 
     // Try to cast the property
-    auto typeProp = dynamic_cast<const ana::PropertyT<T>*>(prop);
+    auto typeProp = dynamic_cast<const ana::PropertyTVal<T>*>(prop);
     if(!typeProp) return StatusCode::FAILURE;
     ANA_CHECK( tool->setProperty(prop->name(), typeProp->value()) );
     return StatusCode::SUCCESS;
@@ -39,7 +39,7 @@ namespace ana
   //---------------------------------------------------------------------------
   // Apply property to tool
   //---------------------------------------------------------------------------
-  StatusCode applyProperty(const ana::Property* prop, asg::AsgTool* tool)
+  StatusCode applyProperty(const ana::PropertyVal* prop, asg::AsgTool* tool)
   {
     using namespace msgPropUtil;
 
