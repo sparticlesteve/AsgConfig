@@ -65,6 +65,10 @@ namespace ana
 
   /// @class PropertyTVal
   /// @brief Templated PropertyVal which actually stores the value.
+  ///
+  /// There is introduces a dependency on PropertyMgr which could go away with
+  /// an update to the PropertyMgr's interface in RootCore.
+  ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
   template<class T>
