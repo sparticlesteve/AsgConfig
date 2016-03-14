@@ -11,7 +11,13 @@
 
 // Framework includes
 #include "AsgTools/AsgMessaging.h"
-#include "AsgTools/AsgTool.h"
+#include "AsgTools/IAsgTool.h"
+
+// Forward declarations
+namespace asg
+{
+  class AsgTool;
+}
 
 namespace ana
 {
@@ -35,7 +41,7 @@ namespace ana
       /// This method will check for an already-existing tool and return it.
       /// If the tool doesn't already exist, it will be constructed and
       /// configured according to the contents of the ConfigSvc.
-      asg::AsgTool* getTool(const std::string& name, const std::string& type);
+      asg::IAsgTool* getTool(const std::string& name, const std::string& type);
 
     private:
 
@@ -44,7 +50,7 @@ namespace ana
                                                const std::string& type);
 
       /// Tool storage
-      std::unordered_map< std::string, std::unique_ptr<asg::AsgTool> > m_tools;
+      std::unordered_map< std::string, std::unique_ptr<asg::IAsgTool> > m_tools;
 
   }; // class AsgToolSvc
 

@@ -4,6 +4,7 @@
 
 // Framework includes
 #include "AsgTools/ToolStore.h"
+#include "AsgTools/AsgTool.h"
 
 // Local includes
 #include "AsgConfig/AsgToolSvc.h"
@@ -22,8 +23,8 @@ namespace ana
   //---------------------------------------------------------------------------
   // Retrieve a tool by type and name
   //---------------------------------------------------------------------------
-  asg::AsgTool* AsgToolSvc::getTool(const std::string& name,
-                                    const std::string& type)
+  asg::IAsgTool* AsgToolSvc::getTool(const std::string& name,
+                                     const std::string& type)
   {
     // First, look for the tool in our map
     auto toolItr = m_tools.find(name);
@@ -38,7 +39,10 @@ namespace ana
 
       // If the tool doesn't exist, then we need to create it
       auto tool = createTool(name, type);
-      if(!tool) return nullptr; // something went wrong
+      if(!tool) {
+        ATH_MSG_ERROR("Failed to create tool: " << name);
+        return nullptr;
+      }
 
       // Configure the tool via the ConfigSvc
       auto& configSvc = ConfigSvc::getInstance();
@@ -47,7 +51,7 @@ namespace ana
 
       // Initialize the tool
       if(tool->initialize().isFailure()) {
-        ATH_MSG_DEBUG("Failure initializing " << name);
+        ATH_MSG_ERROR("Failure initializing " << name);
         return nullptr;
       }
 
@@ -62,8 +66,8 @@ namespace ana
   //---------------------------------------------------------------------------
   // Create a tool using the ROOT dictionary
   //---------------------------------------------------------------------------
-  std::unique_ptr<asg::AsgTool> AsgToolSvc::createTool(const std::string& name,
-                                                       const std::string& type)
+  std::unique_ptr<asg::AsgTool>
+  AsgToolSvc::createTool(const std::string& name, const std::string& type)
   {
     ATH_MSG_DEBUG("Creating tool of type " << type);
 
@@ -101,7 +105,7 @@ namespace ana
 
     // Call the function. Here it's a little strange, because the ROOT function
     // returns a 'long', so we have to cast it back to a useful pointer.
-    asg::AsgTool* tool = reinterpret_cast<asg::AsgTool*>
+    auto tool = reinterpret_cast<asg::AsgTool*>
       ( gInterpreter->CallFunc_ExecInt(callFunc, 0) );
 
     // Cleanup the CallFunc
