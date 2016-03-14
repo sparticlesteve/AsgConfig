@@ -3,7 +3,6 @@
 
 // Local includes
 #include "AsgConfig/ConfigSvc.h"
-#include "AsgConfig/PropertyUtil.h"
 
 namespace ana
 {
@@ -44,10 +43,11 @@ namespace ana
   StatusCode ConfigSvc::configureTool(asg::AsgTool* tool)
   {
     // Find the property list for this tool
-    auto itr = m_props.find(tool->name());
+    auto itr = m_props.find( tool->name() );
+    auto propMgr = tool->getPropertyMgr();
     if(itr != m_props.end()) {
       for(auto prop : itr->second) {
-        ATH_CHECK( applyProperty(prop, tool) );
+        ATH_CHECK( prop->applyProperty(propMgr) );
       }
     }
     return StatusCode::SUCCESS;
