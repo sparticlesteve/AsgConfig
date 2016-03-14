@@ -42,4 +42,13 @@ namespace ana
   PropertyTVal<T>::type() const
   { return typeid(T); }
 
+  //---------------------------------------------------------------------------
+  // Assign property value to an AsgTool
+  //---------------------------------------------------------------------------
+  template<class T> StatusCode
+  PropertyTVal<T>::applyProperty(PropertyMgr* propMgr) const
+  {
+    return propMgr->setProperty(name(), m_val);
+  }
+
 } // namespace ana

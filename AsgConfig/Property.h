@@ -7,6 +7,11 @@
 #include <vector>
 #include <typeinfo>
 
+// Infrastructure
+#include "AsgTools/StatusCode.h"
+#include "AsgTools/PropertyMgr.h"
+
+
 namespace ana
 {
 
@@ -41,6 +46,15 @@ namespace ana
       /// Get property type
       virtual const std::type_info& type() const = 0;
 
+      /// Assign value to a property manager
+      virtual StatusCode applyProperty(PropertyMgr*) const = 0;
+
+      /// Get a Property object to use for assignment.
+      /// Something like this could be added and used to assign a property
+      /// to a tool, but it requires an interface update to the standalone
+      /// PropertyMgr.
+      //virtual asg::Property getProperty() const = 0;
+
     private:
 
       /// Name of the property
@@ -62,11 +76,14 @@ namespace ana
       /// Template constructor
       PropertyTVal(const std::string& name, const T& val);
       /// Polymorphic cloning
-      virtual std::unique_ptr<PropertyVal> clone() const override;
+      virtual std::unique_ptr<PropertyVal> clone() const override final;
       /// Retrieve the value
       const T& value() const;
       /// Get the type of the value
-      const std::type_info& type() const override;
+      virtual const std::type_info& type() const override final;
+      /// Assign property value to a property manager
+      virtual StatusCode applyProperty(PropertyMgr*) const override final;
+
     private:
       T m_val;
   }; // class PropertyTVal
