@@ -52,6 +52,7 @@ services. I am instead writing standalone _replacements_ for gaudi services.
 ### Design of services and tool lifetime management
 
 A few questions need to be answered:
+
 1. How should the lifetime of the tools be managed?
   * shared/unique ownership by clients?
   * unique ownership by the tool service?
@@ -70,6 +71,7 @@ be managed with static lifetime. So, if the tool svc is a singleton, then it
 cannot own the tools.
 
 Here are a few scenarios that could work:
+
 1. Singleton toolsvc, client-shared ownership of tools (unique\_ptr for private
    tools)
 2. Client-shared toolsvc, retrieved via a weak\_ptr registry, owns the tools
