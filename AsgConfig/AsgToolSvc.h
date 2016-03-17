@@ -13,6 +13,9 @@
 #include "AsgTools/AsgMessaging.h"
 #include "AsgTools/IAsgTool.h"
 
+// Local includes
+#include "AsgConfig/IAsgService.h"
+
 // Forward declarations
 namespace asg
 {
@@ -29,7 +32,8 @@ namespace ana
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
-  class AsgToolSvc : public asg::AsgMessaging
+  class AsgToolSvc : public virtual asg::IAsgService,
+                     public asg::AsgMessaging
   {
 
     public:
@@ -37,11 +41,22 @@ namespace ana
       /// Standard constructor
       AsgToolSvc(const std::string& name);
 
+      /// Service name
+      virtual const std::string& name() const override final { return m_name; }
+
       /// @brief Retrieve a tool by type and name.
+      ///
       /// This method will check for an already-existing tool and return it.
       /// If the tool doesn't already exist, it will be constructed and
       /// configured according to the contents of the ConfigSvc.
       asg::IAsgTool* getTool(const std::string& name, const std::string& type);
+
+      /// Retrieve tool cast to a specified type
+      template<class T>
+      T* getToolCast(const std::string& name, const std::string& type)
+      {
+        return dynamic_cast<T*>( getTool(name, type) );
+      }
 
     private:
 
@@ -51,6 +66,9 @@ namespace ana
 
       /// Tool storage
       std::unordered_map< std::string, std::unique_ptr<asg::IAsgTool> > m_tools;
+
+      /// Service name
+      std::string m_name;
 
   }; // class AsgToolSvc
 

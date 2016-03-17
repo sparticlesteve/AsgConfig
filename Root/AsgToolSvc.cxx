@@ -17,7 +17,7 @@ namespace ana
   // Constructor
   //---------------------------------------------------------------------------
   AsgToolSvc::AsgToolSvc(const std::string& name)
-    : asg::AsgMessaging(name)
+    : asg::AsgMessaging(name), m_name(name)
   {}
 
   //---------------------------------------------------------------------------
