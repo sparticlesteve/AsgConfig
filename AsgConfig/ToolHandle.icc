@@ -1,0 +1,130 @@
+// Dear emacs, this is -*- c++ -*-
+// $Id: ToolHandle.icc 724348 2016-02-16 20:16:11Z krumnack $
+#ifndef ASGCONFIG_TOOLHANDLE_ICC
+#define ASGCONFIG_TOOLHANDLE_ICC
+
+// System include(s):
+#include <stdexcept>
+#include <iostream>
+
+// Local include(s):
+#include "AsgTools/ToolStore.h"
+#include "AsgConfig/AsgToolSvc.h"
+#include "AsgConfig/ServiceStore.h"
+
+namespace dev
+{
+
+template< class T >
+ToolHandle< T >::ToolHandle( T* ptool )
+: ToolHandleBase(), m_ptool( ptool ),
+  // TODO: lazy fetching with proper error handling
+  m_toolSvc(asg::ServiceStore::get<ana::AsgToolSvc>("AsgToolSvc"))
+{
+   // Set the name in the base class in case we received a valid pointer:
+   if( m_ptool ) {
+      m_name = m_ptool->name();
+   }
+}
+
+template< class T >
+ToolHandle< T >::ToolHandle( const std::string& typeAndName, asg::IAsgTool* parent )
+: ToolHandleBase( typeAndName, parent ), m_ptool( 0 ),
+  m_toolSvc(asg::ServiceStore::get<ana::AsgToolSvc>("AsgToolSvc"))
+{
+}
+
+template< class T >
+T& ToolHandle< T >::operator*() const {
+
+   // Retrieve the tool pointer if necessary:
+   if( ! m_ptool ) {
+      retrieveTool();
+   }
+   // Check if we succeeded:
+   if( ! m_ptool ) {
+      throw std::runtime_error( "Couldn't find tool with name \"" +
+                                name() + "\"" );
+   }
+
+   // Return a reference to the tool:
+   return *m_ptool;
+}
+
+template< class T >
+T* ToolHandle<T>::operator->() const {
+
+   // Retrieve the tool pointer if necessary:
+   if( ! m_ptool ) {
+      retrieveTool();
+   }
+   // Check if we succeeded:
+   if( ! m_ptool ) {
+      throw std::runtime_error( "Couldn't find tool with name \"" +
+                                name() + "\"" );
+   }
+
+   // Return the (possibly null-)pointer to the tool:
+   return m_ptool;
+}
+
+template< class T >
+StatusCode ToolHandle< T >::retrieve() const {
+
+   // If we have the tool already, there's nothing to do:
+   if( m_ptool ) {
+      return StatusCode::SUCCESS;
+   }
+
+   // Try to retrieve the tool:
+   retrieveTool();
+
+   // Check if it succeeded:
+   if( m_ptool ) {
+      return StatusCode::SUCCESS;
+   } else {
+      return StatusCode::FAILURE;
+   }
+}
+
+template< class T >
+bool ToolHandle< T >::empty() const {
+
+   return ( ( m_ptool == 0 ) && ( name().size() == 0 ) );
+}
+
+template< class T >
+bool ToolHandle< T >::isSet() const {
+
+   return ( !( m_ptool == 0 ) );
+}
+
+template< class T >
+void ToolHandle< T > :: retrieveTool() const {
+
+   if( m_ptool ) return;
+
+   if( m_toolSvc ) {
+      m_ptool = m_toolSvc->getToolCast< T >( name(), type() );
+   } else {
+      m_ptool = asg::ToolStore::get< T >( name() );
+   }
+}
+
+template< class T >
+std::ostream& operator<<( std::ostream& out,
+                          const ToolHandle< T >& handle ) {
+
+   out << "ASG ToolHandle with name = \"" << handle.name() << "\", pointer = ";
+   T* ptool = nullptr;
+   if (handle.retrieve())
+     ptool = handle.operator->();
+   out << ptool;
+
+   // Return the same stream object:
+   return out;
+}
+
+} // namespace dev
+
+#endif // ASGCONFIG_TOOLHANDLE_ICC
