@@ -76,8 +76,10 @@ TEST( HandleTest, DereferencePtr )
 
 int main(int argc, char** argv)
 {
+#ifdef ROOTCORE
   StatusCode::enableFailure();
   ANA_CHECK( xAOD::Init() );
+#endif
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
