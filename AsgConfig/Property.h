@@ -140,13 +140,16 @@ namespace ana
       /// Iterator cend method
       const_iterator end() const;
 
+      /// Size of the property list
+      std::size_t size() const;
+
       /// Clear properties
       void clear();
 
       /// Find property by name
       const PropertyVal* find(const std::string& name) const;
 
-      /// @brief Update a property in the list.
+      /// Update a property in the list.
       /// If it already exists, the old property is replaced.
       /// Maybe this method should just make a copy.
       void updateProperty(std::unique_ptr<PropertyVal> prop);
