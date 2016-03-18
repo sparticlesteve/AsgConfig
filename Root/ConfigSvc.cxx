@@ -38,6 +38,19 @@ namespace ana
   }
 
   //---------------------------------------------------------------------------
+  // Get list of properties for a tool
+  //---------------------------------------------------------------------------
+  const PropertyValList& ConfigSvc::getProperties(const std::string& toolName) const
+  {
+    static const PropertyValList emptyList;
+    auto itr = m_props.find(toolName);
+    if(itr != m_props.end())
+      return itr->second;
+    else
+      return emptyList;
+  }
+
+  //---------------------------------------------------------------------------
   // Configure a tool
   //---------------------------------------------------------------------------
   StatusCode ConfigSvc::configureTool(asg::AsgTool* tool)

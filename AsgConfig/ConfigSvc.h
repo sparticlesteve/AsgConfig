@@ -53,6 +53,9 @@ namespace ana
       void setProperties(const std::string& toolName,
                          const PropertyValList& props);
 
+      /// Get the list of properties registered for a tool
+      const PropertyValList& getProperties(const std::string& toolName) const;
+
       /// Configure a tool with known properties.
       StatusCode configureTool(asg::AsgTool* tool);
 
