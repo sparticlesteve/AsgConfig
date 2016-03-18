@@ -2,6 +2,8 @@
 
 #include "AsgConfig/ToolHandle.h"
 #include "AsgConfig/IMyTool.h"
+#include "AsgConfig/ParentTool.h"
+#include "AsgConfig/ChildTool.h"
 
 #include "AsgTools/MessageCheck.h"
 #include "AsgTools/UnitTest.h"
@@ -42,7 +44,7 @@ TEST( HandleTest, RetrieveEmpty )
 TEST( HandleTest, RetrieveName )
 {
   auto tool = CxxUtils::make_unique<asg::UnitTestTool1>("test");
-  ToolHandle<asg::IUnitTestTool1> handle("test");
+  ToolHandle<asg::IUnitTestTool1> handle( tool->name() );
   ASSERT_SUCCESS( handle.retrieve() );
 }
 
@@ -72,6 +74,14 @@ TEST( HandleTest, DereferencePtr )
   auto tool = CxxUtils::make_unique<asg::UnitTestTool1>("test");
   dev::ToolHandle<asg::IUnitTestTool1> handle( tool.get() );
   ASSERT_EQ( &*handle, tool.get() );
+}
+
+TEST( HandleTest, SetChildHandle )
+{
+  ParentTool parentTool("parent");
+  ChildTool childTool("child");
+  dev::ToolHandle<IMyTool> handle( childTool.name() );
+  ASSERT_SUCCESS( parentTool.setProperty("ChildTool", handle) );
 }
 
 int main(int argc, char** argv)

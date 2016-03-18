@@ -6,19 +6,14 @@
 
 #include "gtest/gtest.h"
 
-#ifdef ROOTCORE
-#  include "xAODRootAccess/Init.h"
-#endif
-
-using CxxUtils::make_unique;
-using ana::BoolProperty;
-using ana::IntProperty;
-using ana::FloatProperty;
-using ana::StringProperty;
-using ana::PropertyValList;
-
 namespace
 {
+  using CxxUtils::make_unique;
+  using ana::BoolProperty;
+  using ana::IntProperty;
+  using ana::FloatProperty;
+  using ana::StringProperty;
+  using ana::PropertyValList;
 
   using namespace asg::msgUserCode;
 

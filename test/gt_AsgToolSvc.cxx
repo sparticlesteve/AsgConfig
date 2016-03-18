@@ -19,8 +19,8 @@ namespace
   TEST(ToolSvcTest, CreateTool)
   {
     ana::AsgToolSvc toolSvc("AsgToolSvc");
-    const std::string toolName = "MuonSelectionToolTest";
-    const std::string toolType = "CP::MuonSelectionTool";
+    const std::string toolName = "ChildTool";
+    const std::string toolType = "ChildTool";
     auto tool = toolSvc.getTool(toolName, toolType);
     EXPECT_TRUE( tool != nullptr );
   }
