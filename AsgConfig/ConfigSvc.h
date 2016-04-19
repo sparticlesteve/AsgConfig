@@ -13,7 +13,7 @@
 #include "AsgTools/AsgMessaging.h"
 
 // Local includes
-#include "AsgConfig/Property.h"
+#include "AsgConfig/PropertyVal.h"
 
 // Forward declarations
 namespace asg

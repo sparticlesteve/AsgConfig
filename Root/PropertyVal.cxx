@@ -1,4 +1,4 @@
-#include "AsgConfig/Property.h"
+#include "AsgConfig/PropertyVal.h"
 
 namespace ana
 {

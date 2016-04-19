@@ -2,7 +2,7 @@
 #include "AsgTools/UnitTest.h"
 #include "CxxUtils/make_unique.h"
 
-#include "AsgConfig/Property.h"
+#include "AsgConfig/PropertyVal.h"
 
 #include "gtest/gtest.h"
 

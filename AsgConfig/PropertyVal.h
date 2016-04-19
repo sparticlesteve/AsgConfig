@@ -22,9 +22,9 @@ namespace ana
   /// property catalog and applied to tools. In Gaudi, the standard Property
   /// class can own its own value, which allows to use the same class in the
   /// catalog as is used in the tools' property managers. In standalone,
-  /// however, the Property class is non-owning, so I introduce this class to
-  /// provide the extra missing functionality. This could thus be removed if
-  /// the Property class is updated.
+  /// however, the Property class is non-owning, so I introduce this class
+  /// to provide the extra missing functionality. This could thus be removed
+  /// if the Property class is updated.
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
@@ -66,8 +66,8 @@ namespace ana
   /// @class PropertyTVal
   /// @brief Templated PropertyVal which actually stores the value.
   ///
-  /// There is introduces a dependency on PropertyMgr which could go away with
-  /// an update to the PropertyMgr's interface in RootCore.
+  /// There is introduces a dependency on PropertyMgr which could go away
+  /// with an update to the PropertyMgr's interface in RootCore.
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
@@ -163,6 +163,6 @@ namespace ana
 
 } // namespace ana
 
-#include <AsgConfig/Property.icc>
+#include <AsgConfig/PropertyVal.icc>
 
 #endif
