@@ -95,38 +95,13 @@ create the initial services and then they can be retrieved. It wouldn't be too
 difficult to use a ROOT dict factory method, though I may need a way to ensure
 services stay alive in between usages during initialization.
 
-### Design of services and tool lifetime management
+Does this infrastructure require a new implementation of ServiceHandle?
+* Maybe...
 
-This text to be deleted.
+### Incoporation into ToolHandle
 
-A few questions need to be answered:
-
-1. How should the lifetime of the tools be managed?
-  * shared/unique ownership by clients?
-  * unique ownership by the tool service?
-2. How should the AsgToolSvc (or other services') lifetime be managed?
-  * as a singleton?
-  * shared ownership by clients?
-  * unique ownership by a service manager or registry?
-3. How should the services like AsgToolSvc be accessed by clients like the
-   ToolHandle?
-  * via singleton global access?
-  * via a global service registry?
-
-These questions are closely coupled because certain solutions to some questions
-rule out possible solutions to others. One constraint is that the tools cannot
-be managed with static lifetime. So, if the tool svc is a singleton, then it
-cannot own the tools.
-
-Here are a few scenarios that could work:
-
-1. Singleton toolsvc, client-shared ownership of tools (unique\_ptr for private
-   tools)
-2. Client-shared toolsvc, retrieved via a weak\_ptr registry, owns the tools
-3. Client-shared toolsvc, with client-shared tools
-
-I've decided to start with option number #2 for now. I can consider other
-possibilities later, particularly after some discussion with other developers.
-In this model, the ToolHandle can retrieve the AsgToolSvc via a static
-ServiceStore which functions a lot like the AsgTools/ToolStore (except for the
-reference counting).
+I have a modified version of the AsgTools ToolHandle:
+[asg::dev::ToolHandle] (AsgConfig/ToolHandle.h). The handle will
+preferentially check for existence of the AsgToolSvc and try to retrieve its
+tool from there. For backwards compatibility, for now it will fall back to the
+usual ToolStore based retrieval if the AsgToolSvc doesn't exist.
