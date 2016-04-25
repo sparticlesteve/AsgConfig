@@ -99,8 +99,13 @@ create the initial services and then they can be retrieved. It wouldn't be too
 difficult to use a ROOT dict factory method, though I may need a way to ensure
 services stay alive in between usages during initialization.
 
-Does this infrastructure require a new implementation of ServiceHandle?
-* Maybe...
+There are a number of additional open questions, such as:
+* Does this infrastructure require a new implementation of ServiceHandle?
+  * maybe...
+* Should there be a common AsgService base class?
+  * could help with boiler plate.
+* Should these services also be configurable like a tool is, with properties?
+  * things quickly getting complicated...
 
 ### Incoporation into ToolHandle
 
