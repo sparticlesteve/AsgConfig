@@ -106,6 +106,8 @@ There are a number of additional open questions, such as:
   * could help with boiler plate.
 * Should these services also be configurable like a tool is, with properties?
   * things quickly getting complicated...
+* Should we mirror the initialize() state of Gaudi services?
+  * nicer to grab all resources at construction if possible.
 
 ### Incoporation into ToolHandle
 
