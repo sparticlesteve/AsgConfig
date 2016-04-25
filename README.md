@@ -17,6 +17,7 @@ try and make the Athena/Gaudi services useable outside of the framework. This
 choice of approach can be revisited.
 
 Some design goals
+
 1. Backwards compatibility; don't break existing workflows. I.e., the new
    infrastructure should be optional.
 2. Robust lifetime management of tools and services. E.g., don't use static
@@ -42,6 +43,7 @@ AsgTools Property class only provides the former, so I need to implement a
 solution for storing property values in a catalog at configuration time.
 
 Possible solutions for property storage:
+
 1. Extend AsgTools Property to be able to allocate its value and store that.
 2. Store the actual Property _values_ in a separate structure in the catalog
    and use the AsgTools Property class to reference those.
@@ -58,6 +60,7 @@ class which also provides a configureTool method.
 ### Tool management
 
 How should the lifetime of the tools be managed?
+
 1. Shared or unique ownership by clients in a tool handle.
 2. Unique ownership by a tool service.
 
@@ -77,6 +80,7 @@ taking it to mean a shared component which simply corresponds to some existing
 service functionality in Athena/Gaudi.
 
 How could services be managed?
+
 1. Singleton pattern.
 2. Shared ownership by clients.
 3. Unique ownership by a service manager or registry.
