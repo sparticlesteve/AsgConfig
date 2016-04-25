@@ -16,7 +16,7 @@ class implementation is switched at compile-time. Another strategy would be to
 try and make the Athena/Gaudi services useable outside of the framework. This
 choice of approach can be revisited.
 
-Some design goals
+Some design goals:
 
 1. Backwards compatibility; don't break existing workflows. I.e., the new
    infrastructure should be optional.
