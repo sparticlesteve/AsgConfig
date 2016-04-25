@@ -37,19 +37,23 @@ The basic components that are being tested for the upgrade are:
 ### Property value storage and assignment
 
 In Gaudi, the Property class can either reference a tool's member variable or
-it can own its own value for storage in a catalog. However, the AsgTools
-Property class only provides for former, so I need a way to store values prior
-to tool creation.
+it can allocate its own variable for storage in a catalog. However, the
+AsgTools Property class only provides the former, so I need to implement a
+solution for storing property values in a catalog at configuration time.
 
 Possible solutions for property storage:
-1. Extend AsgTools Property cabability to own its value and store that.
-2. Store Property values in a catalog along with Property objects that
-   reference them.
+1. Extend AsgTools Property to be able to allocate its value and store that.
+2. Store the actual Property _values_ in a separate structure in the catalog
+   and use the AsgTools Property class to reference those.
 3. Implement a new type of property object that owns its value and store that.
 
 For now, I've implemented option 3 as the [PropertyVal] (AsgConfig/PropertyVal.h)
 class. Similar to the other Property implementations, a derived template class
-handles the value type.
+handles the value type. I don't actually think this is the best long-term
+solution.
+
+The catalog of PropertyVals is for now in a [ConfigSvc] (AsgConfig/ConfigSvc.h)
+class which also provides a configureTool method.
 
 ### Tool management
 
