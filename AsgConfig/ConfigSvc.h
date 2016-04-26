@@ -1,5 +1,5 @@
-#ifndef ASGCONFIG_CONFIG_SVC_H
-#define ASGCONFIG_CONFIG_SVC_H
+#ifndef ASGCONFIG_CONFIGSVC_H
+#define ASGCONFIG_CONFIGSVC_H
 
 // Eventaully should only be compiled outside of Athena
 #ifdef ROOTCORE

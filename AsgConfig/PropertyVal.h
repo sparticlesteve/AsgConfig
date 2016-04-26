@@ -1,5 +1,5 @@
-#ifndef ASGCONFIG_PROPERTY_H
-#define ASGCONFIG_PROPERTY_H
+#ifndef ASGCONFIG_PROPERTYVAL_H
+#define ASGCONFIG_PROPERTYVAL_H
 
 // STL includes
 #include <string>
