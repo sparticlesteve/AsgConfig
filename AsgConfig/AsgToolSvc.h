@@ -21,6 +21,10 @@ namespace asg
 {
   class AsgTool;
 }
+namespace ana
+{
+  class ConfigSvc;
+}
 
 namespace ana
 {
@@ -66,6 +70,10 @@ namespace ana
 
       /// Tool storage
       std::unordered_map< std::string, std::unique_ptr<asg::IAsgTool> > m_tools;
+
+      /// Pointer to the standalone ConfigSvc.
+      /// TODO: use an interface.
+      std::shared_ptr<ConfigSvc> m_configSvc;
 
       /// Service name
       std::string m_name;

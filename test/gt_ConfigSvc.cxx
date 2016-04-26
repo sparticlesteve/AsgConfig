@@ -14,14 +14,14 @@ namespace
 
   TEST(ConfigSvcTest, EmptyProperties)
   {
-    auto& configSvc = ConfigSvc::getInstance();
+    ConfigSvc configSvc("ConfigSvc");
     const auto& propList = configSvc.getProperties("test");
     EXPECT_EQ( propList.size(), 0u );
   }
 
   TEST(ConfigSvcTest, ConfigureTool)
   {
-    auto& configSvc = ConfigSvc::getInstance();
+    ConfigSvc configSvc("ConfigSvc");
     const std::string toolName = "TestTool";
     ana::FloatProperty ptProp("MuonPtMin", 20.f);
     ana::StringProperty stringProp("StringProp", "testString");

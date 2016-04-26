@@ -2,19 +2,18 @@
 #include "AsgTools/AsgTool.h"
 
 // Local includes
+#include "AsgConfig/ServiceStore.h"
 #include "AsgConfig/ConfigSvc.h"
 
 namespace ana
 {
 
   //---------------------------------------------------------------------------
-  // Retrieve the singleton instance
+  // Constructor
   //---------------------------------------------------------------------------
-  ConfigSvc& ConfigSvc::getInstance()
-  {
-    static ConfigSvc conf;
-    return conf;
-  }
+  ConfigSvc::ConfigSvc(const std::string& name)
+    : asg::AsgMessaging(name), m_name(name)
+  {}
 
   //---------------------------------------------------------------------------
   // Store one property for a tool
@@ -64,14 +63,6 @@ namespace ana
       }
     }
     return StatusCode::SUCCESS;
-  }
-
-  //---------------------------------------------------------------------------
-  // Constructor
-  //---------------------------------------------------------------------------
-  ConfigSvc::ConfigSvc()
-    : AsgMessaging("ConfigSvc")
-  {
   }
 
 } // namespace ana

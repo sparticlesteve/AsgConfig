@@ -8,6 +8,7 @@
 
 // Local includes
 #include "AsgConfig/AsgToolSvc.h"
+#include "AsgConfig/ServiceStore.h"
 #include "AsgConfig/ConfigSvc.h"
 
 namespace ana
@@ -45,9 +46,17 @@ namespace ana
       }
 
       // Configure the tool via the ConfigSvc
-      auto& configSvc = ConfigSvc::getInstance();
-      if(configSvc.configureTool(tool.get()).isFailure())
-        return nullptr;
+      // TODO: I need a nicer way to deal with the ConfigSvc.
+      if(!m_configSvc) {
+        m_configSvc = asg::ServiceStore::get<ConfigSvc>("ConfigSvc");
+        if(!m_configSvc) {
+          ATH_MSG_WARNING("Failed to retrieve ConfigSvc");
+        }
+      }
+      if(m_configSvc) {
+        if(m_configSvc->configureTool(tool.get()).isFailure())
+          return nullptr;
+      }
 
       // Initialize the tool
       if(tool->initialize().isFailure()) {

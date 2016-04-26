@@ -13,6 +13,7 @@
 #include "AsgTools/AsgMessaging.h"
 
 // Local includes
+#include "AsgConfig/IAsgService.h"
 #include "AsgConfig/PropertyVal.h"
 
 // Forward declarations
@@ -25,30 +26,33 @@ namespace ana
 {
 
   /// @class ConfigSvc
-  /// @brief Singleton service for holding/applying tool config properties.
+  /// @brief A service for holding/applying tool config properties.
   ///
   /// We store here PropertyVal objects which hold their own values, rather
   /// than use AsgTools/Property objects which do not.
   ///
-  /// I would prefer not to use a singleton, but I think we'll need more
-  /// infrastructure first.
+  /// This design is subject to change.
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
-  class ConfigSvc : public asg::AsgMessaging
+  class ConfigSvc : public virtual asg::IAsgService,
+                    public asg::AsgMessaging
   {
 
     public:
 
-      /// Retrieve the singleton instance.
-      static ConfigSvc& getInstance();
+      /// Standard constructor
+      ConfigSvc(const std::string& name);
+
+      /// Service name
+      virtual const std::string& name() const override final { return m_name; }
 
       /// @brief Assign one property for a tool.
       /// The given property is copied into storage.
       void setProperty(const std::string& toolName,
                        const PropertyVal* prop);
 
-      /// Assign list of properties to a tool.
+      /// @brief Assign list of properties to a tool.
       /// The given list is copied into storage.
       void setProperties(const std::string& toolName,
                          const PropertyValList& props);
@@ -61,14 +65,14 @@ namespace ana
 
     private:
 
-      /// Private constructor
-      ConfigSvc();
-
       /// PropertyVal storage map type
       using PropMap = std::map< std::string, PropertyValList >;
 
       /// PropertyVal storage map
       PropMap m_props;
+
+      /// Service name
+      std::string m_name;
 
   }; // class ConfigSvc
 
