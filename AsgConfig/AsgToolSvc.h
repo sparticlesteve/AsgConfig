@@ -10,8 +10,8 @@
 #include <unordered_map>
 
 // Framework includes
-#include "AsgTools/AsgMessaging.h"
 #include "AsgTools/IAsgTool.h"
+#include "AsgTools/AsgMessaging.h"
 
 // Local includes
 #include "AsgConfig/IAsgToolSvc.h"
@@ -20,6 +20,7 @@
 namespace asg
 {
   class AsgTool;
+  class IConfigSvc;
 }
 namespace ana
 {
@@ -71,9 +72,8 @@ namespace ana
       /// Tool storage
       std::unordered_map< std::string, std::unique_ptr<asg::IAsgTool> > m_tools;
 
-      /// Pointer to the standalone ConfigSvc.
-      /// TODO: use an interface.
-      std::shared_ptr<ConfigSvc> m_configSvc;
+      /// Pointer to the standalone IConfigSvc.
+      std::shared_ptr<asg::IConfigSvc> m_configSvc;
 
       /// Service name
       std::string m_name;
