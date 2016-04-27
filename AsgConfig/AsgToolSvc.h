@@ -14,7 +14,7 @@
 #include "AsgTools/IAsgTool.h"
 
 // Local includes
-#include "AsgConfig/IAsgService.h"
+#include "AsgConfig/IAsgToolSvc.h"
 
 // Forward declarations
 namespace asg
@@ -36,7 +36,7 @@ namespace ana
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
-  class AsgToolSvc : public virtual asg::IAsgService,
+  class AsgToolSvc : public virtual asg::IAsgToolSvc,
                      public asg::AsgMessaging
   {
 
@@ -49,18 +49,18 @@ namespace ana
       virtual const std::string& name() const override final { return m_name; }
 
       /// @brief Retrieve a tool by type and name.
-      ///
       /// This method will check for an already-existing tool and return it.
       /// If the tool doesn't already exist, it will be constructed and
       /// configured according to the contents of the ConfigSvc.
-      asg::IAsgTool* getTool(const std::string& name, const std::string& type);
+      virtual asg::IAsgTool* getTool(const std::string& name,
+                                     const std::string& type) override final;
 
       /// Retrieve tool cast to a specified type
-      template<class T>
-      T* getToolCast(const std::string& name, const std::string& type)
-      {
-        return dynamic_cast<T*>( getTool(name, type) );
-      }
+      //template<class T>
+      //T* getToolCast(const std::string& name, const std::string& type)
+      //{
+      //  return dynamic_cast<T*>( getTool(name, type) );
+      //}
 
     private:
 
