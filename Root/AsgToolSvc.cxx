@@ -9,7 +9,7 @@
 // Local includes
 #include "AsgConfig/AsgToolSvc.h"
 #include "AsgConfig/ServiceStore.h"
-#include "AsgConfig/ConfigSvc.h"
+#include "AsgConfig/IConfigSvc.h"
 
 namespace ana
 {
@@ -45,10 +45,10 @@ namespace ana
         return nullptr;
       }
 
-      // Configure the tool via the ConfigSvc
+      // Configure the tool via the IConfigSvc
       // TODO: I need a nicer way to deal with the ConfigSvc.
       if(!m_configSvc) {
-        m_configSvc = asg::ServiceStore::get<ConfigSvc>("ConfigSvc");
+        m_configSvc = asg::ServiceStore::get<asg::IConfigSvc>("ConfigSvc");
         if(!m_configSvc) {
           ATH_MSG_WARNING("Failed to retrieve ConfigSvc");
         }

@@ -13,7 +13,7 @@
 #include "AsgTools/AsgMessaging.h"
 
 // Local includes
-#include "AsgConfig/IAsgService.h"
+#include "AsgConfig/IConfigSvc.h"
 #include "AsgConfig/PropertyVal.h"
 
 // Forward declarations
@@ -35,7 +35,7 @@ namespace ana
   ///
   /// @author Steve Farrell <Steven.Farrell@cern.ch>
   ///
-  class ConfigSvc : public virtual asg::IAsgService,
+  class ConfigSvc : public virtual asg::IConfigSvc,
                     public asg::AsgMessaging
   {
 
@@ -49,19 +49,21 @@ namespace ana
 
       /// @brief Assign one property for a tool.
       /// The given property is copied into storage.
-      void setProperty(const std::string& toolName,
-                       const PropertyVal* prop);
+      virtual void setProperty(const std::string& toolName,
+                               const PropertyVal* prop) override final;
 
       /// @brief Assign list of properties to a tool.
       /// The given list is copied into storage.
+      /// @todo TODO: do we want this?
       void setProperties(const std::string& toolName,
                          const PropertyValList& props);
 
       /// Get the list of properties registered for a tool
-      const PropertyValList& getProperties(const std::string& toolName) const;
+      virtual const PropertyValList&
+      getProperties(const std::string& toolName) const override final;
 
       /// Configure a tool with known properties.
-      StatusCode configureTool(asg::AsgTool* tool);
+      virtual StatusCode configureTool(asg::AsgTool* tool) override final;
 
     private:
 
